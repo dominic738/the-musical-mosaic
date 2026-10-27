@@ -18,7 +18,7 @@ cd web
 python -m http.server 8000
 ```
 
-Open http://127.0.0.1:8000/ (camera access needs `localhost`/`127.0.0.1` or HTTPS). `web/` is fully static, so it can be hosted on GitHub Pages, Netlify, etc. All video processing happens in the visitor's browser.
+Open http://127.0.0.1:8000/ (camera access needs `localhost`/`127.0.0.1` or HTTPS). `web/` is fully static. Pushing to `main` publishes it to GitHub Pages via `.github/workflows/pages.yml` (set Settings → Pages → Source to "GitHub Actions" once). All video processing happens in the visitor's browser.
 
 ### "Your Spotify" crate
 
