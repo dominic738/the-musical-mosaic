@@ -1,0 +1,366 @@
+/* Styled after The Musical Compass: white paper, black ink, Arimo, square
+   chrome, 2px black borders, a grey sidebar of numbered steps. Color comes
+   only from content: the album covers and the live accent they set. */
+
+@font-face { font-family: "Arimo"; font-style: normal; font-weight: 400 700; font-display: swap;
+  src: url(assets/fonts/arimo-latin.woff2) format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Arimo"; font-style: normal; font-weight: 400 700; font-display: swap;
+  src: url(assets/fonts/arimo-latin-ext.woff2) format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Arimo"; font-style: normal; font-weight: 400 700; font-display: swap;
+  src: url(assets/fonts/arimo-cyrillic.woff2) format("woff2");
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+@font-face { font-family: "Arimo"; font-style: normal; font-weight: 400 700; font-display: swap;
+  src: url(assets/fonts/arimo-greek.woff2) format("woff2");
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF; }
+
+/* ------------------------------------------------------------------ tokens */
+
+:root {
+  --ink: #000000;
+  --ink-2: #4D4D4D;
+  --muted: #6B6B6B;
+  --paper: #FFFFFF;
+  --side: #F2F2F2;
+  --side-line: #CFCFCF;
+  --field-line: #9A9A9A;
+  --danger: #C40000;
+
+  /* Set live from the album you are mostly made of (app.js setAccent). */
+  --accent: #42AAFF;
+
+  --font: "Arimo", Arial, Helvetica, sans-serif;
+  --side-w: 360px;
+
+  color-scheme: light;
+}
+
+/* -------------------------------------------------------------------- base */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { background: var(--paper); }
+
+body {
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--ink);
+  background: var(--paper);
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: var(--side-w) minmax(0, 1fr);
+  grid-template-rows: auto auto auto auto 1fr auto;
+  grid-template-areas:
+    "head   stage"
+    "cam    stage"
+    "albums stage"
+    "strip  stage"
+    "made   stage"
+    "foot   stage";
+  font-variant-numeric: tabular-nums;
+}
+
+::selection { background: var(--accent); color: var(--ink); }
+
+button, input { font: inherit; color: inherit; }
+
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+/* ----------------------------------------------------------------- sidebar */
+
+.side {
+  background: var(--side);
+  border-right: 1px solid var(--side-line);
+  padding: 22px 26px;
+}
+
+.side + .side { border-top: 1px solid var(--side-line); }
+
+.side-head   { grid-area: head; padding-top: 26px; }
+.side-cam    { grid-area: cam; }
+.side-albums { grid-area: albums; }
+.side-strip  { grid-area: strip; }
+.side-made   { grid-area: made; }
+.side-foot   { grid-area: foot; font-size: 12.5px; color: var(--muted); padding-top: 14px; padding-bottom: 18px; }
+
+/* Hide controls: the sidebar folds away and the stage takes the page. */
+body.panel-closed { grid-template-columns: minmax(0, 1fr); grid-template-areas: "stage"; grid-template-rows: auto; }
+body.panel-closed .side { display: none; }
+
+.brand { display: flex; align-items: center; gap: 11px; }
+.brand-name { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
+
+/* The Compass mark's four squares, filled with the four albums you're most
+   made of. */
+.brand-mark {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 2px solid var(--ink);
+  gap: 1.5px;
+  background: var(--ink);
+}
+.brand-mark i { display: block; background-color: var(--side); background-repeat: no-repeat; }
+
+.lede { margin-top: 12px; color: var(--ink-2); font-size: 14px; max-width: 34ch; }
+
+.side-title { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
+
+.field-label { display: block; font-size: 12.5px; font-weight: 700; margin-bottom: 4px; }
+.field-row { display: flex; justify-content: space-between; }
+.field-row output { font-weight: 700; }
+
+input[type=range] { width: 100%; accent-color: var(--ink); }
+
+.toggles { display: flex; gap: 18px; flex-wrap: wrap; margin: 10px 0 12px; }
+.check { display: flex; align-items: center; gap: 7px; cursor: pointer; font-size: 14px; }
+.check input { accent-color: var(--ink); width: 15px; height: 15px; }
+
+/* Buttons: plain chart-page buttons, black on white */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 2px solid var(--ink);
+  border-radius: 0;
+  padding: 8px 14px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  background: var(--paper);
+  color: var(--ink);
+  transition: background-color 0.12s, color 0.12s;
+}
+
+.btn:hover:not(:disabled) { background: var(--ink); color: var(--paper); }
+.btn:active:not(:disabled) { transform: translateY(1px); }
+.btn:disabled { cursor: not-allowed; border-color: var(--field-line); color: var(--muted); }
+
+.btn-primary { width: 100%; }
+.btn-secondary { border-width: 1px; font-weight: 400; padding: 7px 12px; font-size: 14px; white-space: nowrap; }
+
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+.pip {
+  display: block;
+  width: 100%;
+  margin-top: 14px;
+  border: 1px solid var(--ink);
+  transform: scaleX(-1);
+  background: var(--ink);
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+.pip.unmirrored { transform: none; }
+.pip.hidden { display: none; }
+
+.crate { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.crate-opt {
+  text-align: left;
+  background: var(--paper);
+  border: 1.5px solid var(--side-line);
+  padding: 8px 10px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.crate-opt b { font-size: 14px; font-weight: 700; }
+.crate-opt small { font-size: 12.5px; color: var(--ink-2); }
+.crate-opt:hover:not(.active) { border-color: var(--ink-2); }
+.crate-opt.active { border-color: var(--ink); box-shadow: inset 0 -4px 0 var(--accent); transition: box-shadow 0.6s; }
+.crate-opt:disabled { cursor: progress; }
+
+.progress { height: 6px; margin-top: 12px; border: 1px solid var(--ink); background: var(--paper); }
+.progress[hidden] { display: none; }
+.bar { height: 100%; width: 0; background: var(--accent); transition: width 0.15s; }
+
+.slot { margin-top: 14px; }
+.slot[hidden] { display: none; }
+.strip-wrap { display: flex; justify-content: center; overflow: hidden; margin-bottom: 12px; }
+.strip { display: block; width: 46%; border: 1px solid var(--ink); }
+.strip-wrap.printing .strip { animation: print 1.6s cubic-bezier(0.22, 1, 0.36, 1) both; }
+@keyframes print {
+  from { clip-path: inset(0 0 100% 0); transform: translateY(-30%); }
+  to { clip-path: inset(0 0 0 0); transform: none; }
+}
+
+/* You're made of: rows like the Compass song list */
+.made-list { list-style: none; margin: 0 -8px; }
+.made-list li { display: flex; align-items: center; min-width: 0; }
+.made-list li.empty-note { margin: 0 8px; }
+.made-list a {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 8px;
+  color: inherit;
+  text-decoration: none;
+  border: 1px solid transparent;
+}
+.made-list a:hover { background: var(--paper); border-color: var(--ink); }
+.ta-cover { width: 28px; height: 28px; border: 1px solid var(--ink); background-color: var(--side); background-repeat: no-repeat; }
+.ta-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 14px; }
+.ta-name { display: inline; font-weight: 700; }
+.ta-artist { display: inline; color: var(--ink-2); }
+.ta-artist::before { content: " "; }
+.ta-pct { font-size: 12.5px; color: var(--ink-2); }
+
+.empty-note { color: var(--muted); font-size: 14px; }
+
+/* ------------------------------------------------------------------- stage */
+
+.stage {
+  grid-area: stage;
+  position: sticky;
+  top: 0;
+  align-self: start;
+  /* One column sized by the mosaic, so the readout below matches its width. */
+  display: grid;
+  justify-content: center;
+  align-content: start;
+  padding: 32px 40px 40px;
+  min-width: 0;
+}
+
+.mosaic-wrap { position: relative; max-width: 100%; }
+
+#mosaic {
+  display: block;
+  max-width: 100%;
+  max-height: calc(100vh - 175px);
+  border: 2px solid var(--ink);
+  cursor: crosshair;
+}
+
+/* Before the camera starts the canvas has no size, so give the frame one. */
+.mosaic-wrap:has(.splash:not([hidden])) {
+  width: min(calc(100vw - var(--side-w) - 96px), calc((100vh - 175px) * 16 / 9));
+  aspect-ratio: 16 / 9;
+}
+body.panel-closed .mosaic-wrap:has(.splash:not([hidden])) { width: min(calc(100vw - 96px), calc((100vh - 175px) * 16 / 9)); }
+.mosaic-wrap:has(.splash:not([hidden])) #mosaic { visibility: hidden; }
+
+/* The record collection itself, drifting behind the welcome notice. */
+.splash {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  border: 2px solid var(--ink);
+  background: url("data/atlas.jpg") 0 0 / 1128px auto;
+  animation: drift 160s linear infinite;
+  z-index: 2;
+}
+@keyframes drift { to { background-position: -1128px -1128px; } }
+.splash[hidden] { display: none; }
+
+.notice {
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  padding: 20px 22px;
+  max-width: 420px;
+  text-align: center;
+}
+.notice-title { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
+.notice-text { margin: 10px 0 16px; color: var(--ink-2); font-size: 14px; }
+.err { margin-top: 12px; color: var(--danger); font-size: 14px; }
+
+.paused-badge {
+  position: absolute;
+  top: 12px; left: 12px;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  padding: 4px 10px;
+  font-size: 14px;
+  font-weight: 700;
+  z-index: 3;
+}
+.paused-badge[hidden] { display: none; }
+
+.booth-count {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  z-index: 3;
+}
+.booth-count[hidden] { display: none; }
+.booth-count > * { grid-area: 1 / 1; }
+.booth-num {
+  min-width: 1.6em;
+  text-align: center;
+  font-size: clamp(72px, 12vw, 160px);
+  font-weight: 700;
+  line-height: 1.1;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  padding: 0 0.15em;
+}
+.booth-num:empty { display: none; }
+.booth-shot { align-self: end; margin-bottom: 16px; background: var(--paper); border: 2px solid var(--ink); padding: 4px 10px; font-weight: 700; font-size: 14px; }
+
+.flash { position: absolute; inset: 0; background: var(--paper); opacity: 0; pointer-events: none; z-index: 4; }
+.flash.pop { animation: flash 0.45s cubic-bezier(0.16, 1, 0.3, 1); }
+@keyframes flash { from { opacity: 0.95; } to { opacity: 0; } }
+
+/* Result: the album under your cursor, like the Compass readout */
+.result {
+  width: 0;           /* contributes nothing to the column's width... */
+  min-width: 100%;    /* ...then fills it */
+  margin-top: 10px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+.result-body { min-width: 0; }
+.result-hint { color: var(--muted); font-size: 14px; padding-top: 2px; }
+.tooltip { display: flex; align-items: center; gap: 12px; }
+.tooltip[hidden] { display: none; }
+.tooltip:not([hidden]) + .result-hint { display: none; }
+.tip-cover { width: 56px; height: 56px; flex-shrink: 0; border: 2px solid var(--ink); background-repeat: no-repeat; }
+.tip-text { min-width: 0; }
+.tip-name { font-size: 18px; font-weight: 700; overflow-wrap: anywhere; }
+.tip-artist { color: var(--ink-2); }
+.tip-hint { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+.result-actions { display: flex; gap: 8px; flex-shrink: 0; }
+
+/* -------------------------------------------------------------- responsive */
+
+@media (max-width: 900px) {
+  body {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    grid-template-areas: "head" "stage" "cam" "strip" "albums" "made" "foot";
+  }
+
+  .stage { position: static; padding: 20px 16px 24px; }
+  .side { border-right: 0; padding: 18px 16px; }
+  .side-head { padding-top: 20px; padding-bottom: 14px; }
+  .side-cam { border-top: 1px solid var(--side-line); }
+  #mosaic { max-height: 70vh; }
+  .mosaic-wrap:has(.splash:not([hidden])), body.panel-closed .mosaic-wrap:has(.splash:not([hidden])) { width: calc(100vw - 32px); aspect-ratio: 3 / 4; }
+  .result { flex-wrap: wrap; }
+  .strip { width: 52%; }
+}
+
+@media (max-width: 420px) {
+  .brand-name { font-size: 20px; }
+  .result-actions { width: 100%; }
+  .result-actions .btn { flex: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}

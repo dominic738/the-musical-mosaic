@@ -2,8 +2,12 @@
 .cache
 # Album art (local only)
 album-art/
-album_colors.json
-albums.json
+/album_colors.json
+/albums.json
 deleted.txt
 playground.py
 read.py
+# Impeccable working files (screenshots, option sketches) and the skill itself
+.impeccable/review/
+.impeccable/mocks/
+.claude/

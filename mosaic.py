@@ -5,7 +5,7 @@ import cv2 as cv
 from skimage.color import rgb2lab
 
 
-GRID_SIZE = 128
+GRID_SIZE = 60
 
 def precompute_resized_albums(album_images, bw, bh):
     resized = {}

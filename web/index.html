@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Musical Mosaic</title>
+  <meta name="description" content="Your webcam, rebuilt live out of album covers. Take a four-pose photo strip.">
+  <link rel="preload" href="assets/fonts/arimo-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Masthead -->
+  <header class="side side-head">
+    <div class="brand">
+      <div class="brand-mark" id="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      <h1 class="brand-name">The Musical Mosaic</h1>
+    </div>
+    <p class="lede">Your camera, rebuilt live out of <span id="count-label">2,184</span> albums from my Good Songs playlist.</p>
+  </header>
+
+  <!-- Step 1 -->
+  <section class="side side-cam" aria-labelledby="camHeading">
+    <h2 id="camHeading" class="side-title">1. Camera</h2>
+    <label class="field-label field-row" for="grid">Tiles across <output id="grid-out">64</output></label>
+    <input type="range" id="grid" min="16" max="140" step="2" value="64">
+    <div class="toggles">
+      <label class="check"><input type="checkbox" id="mirror" checked><span>Mirror</span></label>
+      <label class="check"><input type="checkbox" id="pip" checked><span>Camera preview</span></label>
+    </div>
+    <div class="pair">
+      <button class="btn btn-secondary" id="pause" disabled>Pause</button>
+      <button class="btn btn-secondary" id="flip" disabled title="Switch front/back camera">Flip camera</button>
+    </div>
+    <video id="video" class="pip" playsinline muted></video>
+  </section>
+
+  <!-- Step 2 -->
+  <section class="side side-albums" aria-labelledby="albumsHeading">
+    <h2 id="albumsHeading" class="side-title">2. Albums</h2>
+    <div class="crate">
+      <button class="crate-opt active" id="src-curated">
+        <b>Good Songs</b>
+        <small id="curated-count">2,184 albums</small>
+      </button>
+      <button class="crate-opt" id="src-spotify">
+        <b>Your Spotify</b>
+        <small id="spotify-status">Connect your library</small>
+      </button>
+    </div>
+    <div class="progress" id="progress" hidden><div class="bar" id="progress-bar"></div></div>
+  </section>
+
+  <!-- Step 3 -->
+  <section class="side side-strip" aria-labelledby="stripHeading">
+    <h2 id="stripHeading" class="side-title">3. Photo strip</h2>
+    <button class="btn btn-primary" id="booth" disabled>Take photo strip</button>
+    <div class="slot" id="slot" hidden>
+      <div class="strip-wrap" id="strip-wrap"></div>
+      <div class="pair">
+        <button class="btn btn-secondary" id="strip-save">Download strip</button>
+        <button class="btn btn-secondary" id="strip-discard">Discard</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Made of -->
+  <section class="side side-made" aria-labelledby="madeHeading">
+    <h2 id="madeHeading" class="side-title">You're made of</h2>
+    <ol class="made-list" id="top-albums"><li class="empty-note">Turn on the camera to see which albums you're made of.</li></ol>
+  </section>
+
+  <footer class="side side-foot">Covers via Spotify. Press space to pause.</footer>
+
+  <!-- Stage -->
+  <main class="stage" id="stage">
+    <div class="mosaic-wrap">
+      <canvas id="mosaic"></canvas>
+
+      <div class="booth-count" id="booth-count" hidden aria-live="assertive">
+        <span class="booth-num" id="booth-num">3</span>
+        <span class="booth-shot" id="booth-shot">shot 1 of 4</span>
+      </div>
+      <div class="flash" id="flash"></div>
+
+      <div class="splash" id="splash">
+        <div class="notice">
+          <h2 class="notice-title">Who are you made of?</h2>
+          <p class="notice-text">Turn on your camera and every tile of you gets swapped for the album cover closest in color. Your video never leaves this browser.</p>
+          <button class="btn btn-primary" id="start">Turn on camera</button>
+          <p class="err" id="cam-error" hidden></p>
+        </div>
+      </div>
+
+      <div class="paused-badge" id="paused" hidden>Paused. Press space to resume.</div>
+    </div>
+
+    <div class="result">
+      <div class="result-body">
+        <div class="tooltip" id="tooltip" hidden>
+          <div class="tip-cover" id="tip-cover"></div>
+          <div class="tip-text">
+            <div class="tip-name" id="tip-name"></div>
+            <div class="tip-artist" id="tip-artist"></div>
+            <div class="tip-hint">Click the tile to open it in Spotify</div>
+          </div>
+        </div>
+        <p class="result-hint">Hover a tile to see its album.</p>
+      </div>
+      <div class="result-actions">
+        <button class="btn btn-secondary" id="snap" disabled>Save still</button>
+        <button class="btn btn-secondary" id="panel-toggle" aria-expanded="true">Hide controls</button>
+      </div>
+    </div>
+  </main>
+
+  <script src="config.js"></script>
+  <script src="spotify.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
